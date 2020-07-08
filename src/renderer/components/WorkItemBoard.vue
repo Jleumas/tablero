@@ -20,7 +20,7 @@
             v-for="workItem in taskEntryList.workItems"
             :key="workItem.id"
             :list="taskEntryList.workItems"
-            @click="showModal(editWorkItemModal)"
+            @click="showModal(editWorkItemModal);setSelectedItemID(workItem.id)"
           >
             <h4 class="card-title">
               <span style="flex-grow: 8">{{workItem.name}}</span>
@@ -35,13 +35,13 @@
         </transition-group>
       </draggable>
       <h4>
-        <b-icon-plus-square @click="showModal(editWorkItemModal)"></b-icon-plus-square>
+        <b-icon-plus-square @click="showModal(editWorkItemModal);setSelectedItemID(0)"></b-icon-plus-square>
       </h4>
     </div>
 
     <div id="addNewList">
       <h3 class="board-group-title">
-        <b-icon-plus-square @click="showModal(editStatusListModal)"></b-icon-plus-square>
+        <b-icon-plus-square @click="showModal(editStatusListModal);setSelectedItemID(0)"></b-icon-plus-square>
       </h3>
     </div>
   </div>
@@ -59,7 +59,7 @@ export default {
     draggable
   },
   methods: {
-    ...mapActions(["Tasks"]),
+    ...mapActions(["setSelectedItemID", "commitTaskEntriesToFile"]),
     showModal(modalID) {
       this.$bvModal.show(modalID);
     },
@@ -97,6 +97,7 @@ export default {
       //The line below will break the function here since taskEntries isn't defined in this component
       //need a workaround to save the JSON on drop
       //this.saveJSON("task_entries.json", this.taskEntries);
+      this.commitTaskEntriesToFile();
       return {
         animation: 0,
         group: "description",

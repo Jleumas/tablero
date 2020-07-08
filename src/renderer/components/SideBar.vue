@@ -1,11 +1,11 @@
 <template>
   <div class="sidenav">
-    <h4 v-for="project in taskEntries.projects" :key="project.projectName">
+    <h4 v-for="project in taskEntries.projects" :key="project.projectName" @click="setSelectedItemID(project.id)">
       <span @click="setSelectedProject(project.projectName)">{{project.projectName}}</span>
       <b-icon-pencil-square @click="showModal(editProjectModal)"></b-icon-pencil-square>
       <b-icon-trash @click="showModal(deleteItemModal)"></b-icon-trash>
     </h4>
-    <h4><b-icon-plus-square @click="showModal(editProjectModal)"></b-icon-plus-square></h4>
+    <h4><b-icon-plus-square @click="showModal(editProjectModal);setSelectedItemID(0)"></b-icon-plus-square></h4>
   </div>
 </template>
 
@@ -15,12 +15,12 @@ const { mapState, mapActions, mapGetters } = createNamespacedHelpers("Tasks");
 
 export default {
   methods: {
-    ...mapActions(["setSelectedProject"]),
+    ...mapActions(["setSelectedProject", "setSelectedItemID"]),
     showModal(modalID) {
       this.$bvModal.show(modalID);
     }
   },
-  mounted: function() {
+  updated: function() {
     this.setSelectedProject(this.taskEntries.projects[0].projectName);
   },
   computed: {
@@ -57,6 +57,8 @@ export default {
   display: block;
 }
 .sidenav div:hover {
+  padding-top: 10px;
+  padding-bottom: 10px;
   color: white;
 }
 </style>

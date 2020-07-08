@@ -2,6 +2,7 @@
   <div class="main-page">
     <SideBar></SideBar>
     <h1 class="board-title" @click="showModal(editProjectModal)">{{selectedProjectName}}</h1>
+    <h2>Current Item ID: {{selectedItemID}}</h2>
     <WorkItemBoard></WorkItemBoard>
     <EditWorkItemModal></EditWorkItemModal>
     <EditStatusListModal></EditStatusListModal>
@@ -32,6 +33,7 @@ export default {
     WorkItemBoard
   },
   methods: {
+    ...mapActions(['loadTaskEntriesFromFile']),
     showModal(modalID) {
       this.$bvModal.show(modalID);
     }
@@ -40,7 +42,11 @@ export default {
     ...mapState([
       "taskEntries",
       "selectedProjectName",
-      "editProjectModal"])
+      "editProjectModal",
+      "selectedItemID"])
+  },
+  mounted: function(){
+    this.loadTaskEntriesFromFile();
   }
 };
 </script>
