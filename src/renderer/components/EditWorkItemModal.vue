@@ -11,9 +11,9 @@
     title="Edit Work Item"
   >
     <p>Work Item Title</p>
-    <b-form-input :value="selectedItem.name"></b-form-input>
+    <b-form-input v-model="itemName"></b-form-input>
     <p>Work Item Description</p>
-    <b-form-input :value="selectedItem.description"></b-form-input>
+    <b-form-input v-model="itemDescription"></b-form-input>
     <p>Associated File</p>
     <input id="file-selector" type="file" @drop="onDrop" />
     <p>{{selectedItem.filepath}}</p>
@@ -22,7 +22,6 @@
       <b-button @click="ok(); editItem(selectedItem)">OK</b-button>
       <b-button @click="cancel()">Cancel</b-button>
     </template>
-
   </b-modal>
 </template>
 
@@ -34,23 +33,41 @@ export default {
   name: "EditWorkItemModal",
   data() {
     return {
-      filename: ''
     };
   },
   methods: {
-    ...mapActions(["editItem"]),
+    ...mapActions(["editItem", "selectedItemBinding"]),
     onDrop(event) {
       event.preventDefault();
-      document.getElementById("file-selector").innerText =
-        event.dataTransfer.files[0].path;
-      this.filename = event.dataTransfer.files[0].path;
-    },
+      this.selectedItem.filepath = event.dataTransfer.files[0].path;
+    }
   },
   computed: {
-    ...mapState([
-      "editWorkItemModal",   
-      "selectedItem"
-      ])
+    ...mapState(["editWorkItemModal", "selectedItem"]),
+    itemName: {
+      get() {
+        return this.selectedItem.name;
+      },
+      set(value) {
+        this.selectedItemBinding({ value: value, key: "name" });
+      }
+    },
+    itemDescription: {
+      get() {
+        return this.selectedItem.description;
+      },
+      set(value) {
+        this.selectedItemBinding({ value: value, key: "description" });
+      }
+    },
+    itemFilepath: {
+      get() {
+        return this.selectedItem.filepath;
+      },
+      set(value) {
+        this.selectedItemBinding({ value: value, key: "filepath" });
+      }
+    }
   }
 };
 </script>

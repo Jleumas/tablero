@@ -46,6 +46,28 @@ const mutations = {
     });
     console.log('Hello from CREATE_ITEM!');
   },
+
+  SELECTED_ITEM_BINDING(state, payload){
+    state.selectedItem[payload.key] = payload.value;
+    //state.selectedItem.name = payload;
+  },
+  SELECTED_ITEM_DESCRIPTION_BINDING(state, payload){
+    state.selectedItem.description = payload;
+  },
+  SELECTED_ITEM_DESCRIPTION_BINDING(state, payload){
+    state.selectedItem.description = payload;
+  },
+  SELECTED_ITEM_DESCRIPTION_BINDING(state, payload){
+    state.selectedItem.description = payload;
+  },
+  SELECTED_ITEM_DESCRIPTION_BINDING(state, payload){
+    state.selectedItem.description = payload;
+  },
+  SELECTED_ITEM_DESCRIPTION_BINDING(state, payload){
+    state.selectedItem.description = payload;
+  },
+
+
   UPDATE_ITEM(state, payload){
     for (let i = 0; i < state.taskEntries.projects.length; i++){
       if (state.taskEntries.projects[i].id == state.id){
@@ -93,6 +115,9 @@ const mutations = {
 }
 
 const actions = {
+  selectedItemBinding({commit}, payload){
+    commit('SELECTED_ITEM_BINDING', payload);
+  },
   //KEEP
   editItem({commit}, payload){
     if (payload.id === 0) commit('CREATE_ITEM', payload);
