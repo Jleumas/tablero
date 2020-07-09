@@ -15,8 +15,8 @@
     <p>Work Item Description</p>
     <b-form-input v-model="itemDescription"></b-form-input>
     <p>Associated File</p>
-    <input id="file-selector" type="file" @drop="onDrop" />
-    <p>{{selectedItem.filepath}}</p>
+    <input id="file-selector" type="file" @drop="onDrop" @watch="setFilepath" />
+    <b-form-input v-model="itemFilepath" @drop="onDrop"></b-form-input>
 
     <template v-slot:modal-footer="{ ok, cancel }">
       <b-button @click="ok(); editItem(selectedItem)">OK</b-button>
@@ -39,7 +39,12 @@ export default {
     ...mapActions(["editItem", "selectedItemBinding"]),
     onDrop(event) {
       event.preventDefault();
-      this.selectedItem.filepath = event.dataTransfer.files[0].path;
+      this.selectedItemBinding({ value: event.dataTransfer.files[0].path, key: "filepath" });
+    }
+  },
+  watch: {
+    setFilepath(event){
+      this.selectedItemBinding({ value: event.dataTransfer.files[0].path, key: "filepath" });
     }
   },
   computed: {

@@ -61,14 +61,11 @@ export default {
     draggable
   },
   methods: {
-    loadModal(item, modalID){
+    loadModal(item, modalID) {
       this.setSelectedItemDetails(item);
       this.$bvModal.show(modalID);
     },
-    ...mapActions([
-      "setSelectedItemDetails",
-      "commitTaskEntriesToFile"
-    ]),
+    ...mapActions(["setSelectedItemDetails", "commitTaskEntriesToFile"]),
     //not used anymore, can delete
     showModal(modalID) {
       this.$bvModal.show(modalID);
@@ -78,12 +75,13 @@ export default {
         return fullpath;
       }
       let pathArray = [];
-      if (fullpath.includes('/')){
-        pathArray = fullpath.split('/');
+      if(fullpath.includes('/')){
+        pathArray = fullpath.split("/");
       }
       else{
-        pathArray = fullpath.split('\\');
-      }
+        pathArray = fullpath.split("\\");
+      } 
+
       return pathArray[pathArray.length - 1];
     },
     getCommandLine() {
