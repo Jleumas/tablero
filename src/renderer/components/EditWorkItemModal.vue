@@ -15,11 +15,11 @@
     <p>Work Item Description</p>
     <b-form-input v-model="itemDescription"></b-form-input>
     <p>Associated File</p>
-    <input id="file-selector" type="file" @drop="onDrop" @watch="setFilepath" />
+    <input id="file-selector" type="file" @drop="onDrop" />
     <b-form-input v-model="itemFilepath" @drop="onDrop"></b-form-input>
 
     <template v-slot:modal-footer="{ ok, cancel }">
-      <b-button @click="ok(); editItem(selectedItem)">OK</b-button>
+      <b-button @click="ok()">OK</b-button>
       <b-button @click="cancel()">Cancel</b-button>
     </template>
   </b-modal>

@@ -171,4 +171,8 @@ export default {
   opacity: 0.5;
   background: #c8ebfb;
 }
+#addNewList {
+  width: 300px;
+  text-align: center;
+}
 </style>
