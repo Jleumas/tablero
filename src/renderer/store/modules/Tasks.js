@@ -35,10 +35,15 @@ const getters = {
 }
 
 const mutations = {
-  CREATE_ITEM(state, payload){
+  //TODO
+  DELETE_ITEM(state, payload) {
+    return null;
+  },
+  //NEED TO TEST
+  CREATE_ITEM(state, payload) {
     state.taskEntries.projects.push({
       "name": payload.name,
-      "id": Math.floor(Math.random()*100000),
+      "id": Math.floor(Math.random() * 100000),
       "type": payload.type,
       "description": payload.description,
       "filepath": payload.filepath,
@@ -46,22 +51,19 @@ const mutations = {
     });
     console.log('Hello from CREATE_ITEM!');
   },
-  //KEEP
-  SELECTED_ITEM_BINDING(state, payload){
+  //KEEP --- WORKING
+  SELECTED_ITEM_BINDING(state, payload) {
     state.selectedItem[payload.key] = payload.value;
   },
-  UPDATE_ITEM(state, payload){
-    for (let i = 0; i < state.taskEntries.projects.length; i++){
-      if (state.taskEntries.projects[i].id == state.id){
+  //need to fix this, maybe use selected_item_binding instead????
+  UPDATE_ITEM(state, payload) {
+    for (let i = 0; i < state.taskEntries.projects.length; i++) {
+      if (state.taskEntries.projects[i].id == state.id) {
         state.taskEntries.projects[i].projectName = state.payload.name;
       }
     }
   },
-  //KEEP
-  DELETE_ITEM(state, payload){
-    return null;
-  },
-  //KEEP
+  //KEEP --- WORKING
   LOAD_TASK_ENTRIES_FROM_FILE(state) {
     let filepath = 'task_entries.json';
     fs.readFile(filepath, "utf8", (err, data) => {
@@ -69,10 +71,10 @@ const mutations = {
       state.taskEntries = JSON.parse(data);
     });
   },
-  //KEEP
+  //KEEP --- WORKING
   COMMIT_TASK_ENTRIES_TO_FILE(state) {
     let savingDisaabled = false;
-    if (savingDisaabled){
+    if (savingDisaabled) {
       console.log('Saving is currently disabled for your own damn good!');
     }
     else {
@@ -83,11 +85,11 @@ const mutations = {
       });
     }
   },
-  //KEEP
+  //KEEP --- WORKING
   SET_SELECTED_ITEM_DETAILS(state, payload) {
     state.selectedItem = payload;
   },
-  //KEEP
+  //KEEP --- WORKING
   SET_SELECTED_PROJECT(state, payload) {
     state.selectedProjectName = payload;
 
@@ -102,32 +104,34 @@ const mutations = {
 }
 
 const actions = {
-  //KEEP
-  selectedItemBinding({commit}, payload){
-    commit('SELECTED_ITEM_BINDING', payload);
-  },
-  //KEEP
-  editItem({commit}, payload){
-    if (payload.id === 0) commit('CREATE_ITEM', payload);
-      else commit('UPDATE_ITEM', payload);
-    commit('COMMIT_TASK_ENTRIES_TO_FILE');
-  },
-  deleteItem({commit}, payload){
+  //TODO
+  deleteItem({ commit }, payload) {
     console.log('deleteItem() dummy');
     return null;
   },
-  setSelectedItemDetails({commit}, payload){
+  //KEEP --- WORKING
+  selectedItemBinding({ commit }, payload) {
+    commit('SELECTED_ITEM_BINDING', payload);
+  },
+  //KEEP --- TEST
+  editItem({ commit }, payload) {
+    if (payload.id === 0) commit('CREATE_ITEM', payload);
+    else commit('UPDATE_ITEM', payload);
+    commit('COMMIT_TASK_ENTRIES_TO_FILE');
+  },
+  //KEEP --- WORKING
+  setSelectedItemDetails({ commit }, payload) {
     commit('SET_SELECTED_ITEM_DETAILS', payload)
   },
-  //KEEP
+  //KEEP --- WORKING
   loadTaskEntriesFromFile({ commit }) {
     commit('LOAD_TASK_ENTRIES_FROM_FILE');
   },
-  //KEEP
+  //KEEP --- WORKING
   commitTaskEntriesToFile({ commit }) {
     commit('COMMIT_TASK_ENTRIES_TO_FILE');
   },
-  //KEEP
+  //KEEP --- WORKING
   setSelectedProject({ commit }, payload) {
     commit('SET_SELECTED_PROJECT', payload);
   }
