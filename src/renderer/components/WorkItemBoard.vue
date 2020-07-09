@@ -77,7 +77,13 @@ export default {
       if (fullpath.includes("http")) {
         return fullpath;
       }
-      let pathArray = fullpath.split("/");
+      let pathArray = [];
+      if (fullpath.includes('/')){
+        pathArray = fullpath.split('/');
+      }
+      else{
+        pathArray = fullpath.split('\\');
+      }
       return pathArray[pathArray.length - 1];
     },
     getCommandLine() {

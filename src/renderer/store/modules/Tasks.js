@@ -46,28 +46,10 @@ const mutations = {
     });
     console.log('Hello from CREATE_ITEM!');
   },
-
+  //KEEP
   SELECTED_ITEM_BINDING(state, payload){
     state.selectedItem[payload.key] = payload.value;
-    //state.selectedItem.name = payload;
   },
-  SELECTED_ITEM_DESCRIPTION_BINDING(state, payload){
-    state.selectedItem.description = payload;
-  },
-  SELECTED_ITEM_DESCRIPTION_BINDING(state, payload){
-    state.selectedItem.description = payload;
-  },
-  SELECTED_ITEM_DESCRIPTION_BINDING(state, payload){
-    state.selectedItem.description = payload;
-  },
-  SELECTED_ITEM_DESCRIPTION_BINDING(state, payload){
-    state.selectedItem.description = payload;
-  },
-  SELECTED_ITEM_DESCRIPTION_BINDING(state, payload){
-    state.selectedItem.description = payload;
-  },
-
-
   UPDATE_ITEM(state, payload){
     for (let i = 0; i < state.taskEntries.projects.length; i++){
       if (state.taskEntries.projects[i].id == state.id){
@@ -89,12 +71,17 @@ const mutations = {
   },
   //KEEP
   COMMIT_TASK_ENTRIES_TO_FILE(state) {
-    console.log('Saving is currently disabled for your own damn good!');
-    // let filepath = 'task_entries.json';
-    // fs.writeFileSync(filepath, JSON.stringify(state.taskEntries), "utf8", err => {
-    //   if (err) throw err;
-    //   console.log(`${filepath} saved`);
-    // });
+    let savingDisaabled = false;
+    if (savingDisaabled){
+      console.log('Saving is currently disabled for your own damn good!');
+    }
+    else {
+      let filepath = 'task_entries.json';
+      fs.writeFileSync(filepath, JSON.stringify(state.taskEntries), "utf8", err => {
+        if (err) throw err;
+        console.log(`${filepath} saved`);
+      });
+    }
   },
   //KEEP
   SET_SELECTED_ITEM_DETAILS(state, payload) {
@@ -115,6 +102,7 @@ const mutations = {
 }
 
 const actions = {
+  //KEEP
   selectedItemBinding({commit}, payload){
     commit('SELECTED_ITEM_BINDING', payload);
   },
