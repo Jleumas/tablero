@@ -35,7 +35,8 @@ export default {
       "taskEntries",
       "deleteItemModal",
       "editProjectModal", 
-      "blankObject"
+      "blankObject",
+      "selectedItem"
     ])
   }
 };

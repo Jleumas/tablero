@@ -11,15 +11,15 @@
     title="Edit Work Item"
   >
     <p>Work Item Title</p>
-    <b-form-input :value="selectedItemName"></b-form-input>
+    <b-form-input :value="selectedItem.name"></b-form-input>
     <p>Work Item Description</p>
-    <b-form-input :value="selectedItemDescription"></b-form-input>
+    <b-form-input :value="selectedItem.description"></b-form-input>
     <p>Associated File</p>
     <input id="file-selector" type="file" @drop="onDrop" />
-    <p>{{selectedItemFilepath}}</p>
+    <p>{{selectedItem.filepath}}</p>
 
     <template v-slot:modal-footer="{ ok, cancel }">
-      <b-button @click="ok(); callEditItem()">OK</b-button>
+      <b-button @click="ok(); editItem(selectedItem)">OK</b-button>
       <b-button @click="cancel()">Cancel</b-button>
     </template>
 
@@ -38,6 +38,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["editItem"]),
     onDrop(event) {
       event.preventDefault();
       document.getElementById("file-selector").innerText =
@@ -48,11 +49,7 @@ export default {
   computed: {
     ...mapState([
       "editWorkItemModal",   
-      "selectedItemName",
-      "selectedItemID",
-      "selectedItemType",
-      "selectedItemDescription",
-      "selectedItemFilepath"
+      "selectedItem"
       ])
   }
 };

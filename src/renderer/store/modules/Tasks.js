@@ -6,12 +6,14 @@ const state = {
   selectedProjectName: '',
   selectedProjectTaskEntries: {},
 
-  selectedItemName: '',
-  selectedItemID: '',
-  selectedItemType: '',
-  selectedItemDescription: '',
-  selectedItemFilepath: '',
-  selectedItemColor: '',
+  selectedItem: {
+    name: '',
+    id: '',
+    type: '',
+    description: '',
+    filepath: '',
+    color: ''
+  },
 
   deleteItemModal: "deleteItemModal",
   editWorkItemModal: "editWorkItemModal",
@@ -52,6 +54,10 @@ const mutations = {
     }
   },
   //KEEP
+  DELETE_ITEM(state, payload){
+    return null;
+  },
+  //KEEP
   LOAD_TASK_ENTRIES_FROM_FILE(state) {
     let filepath = 'task_entries.json';
     fs.readFile(filepath, "utf8", (err, data) => {
@@ -71,12 +77,6 @@ const mutations = {
   //KEEP
   SET_SELECTED_ITEM_DETAILS(state, payload) {
     state.selectedItem = payload;
-    state.selectedItemName = payload.name;
-    state.selectedItemID = payload.id;
-    state.selectedItemType = payload.type;
-    state.selectedItemDescription = payload.description;
-    state.selectedItemFilepath = payload.filepath;
-    state.selectedItemColor = payload.color;
   },
   //KEEP
   SET_SELECTED_PROJECT(state, payload) {
@@ -100,6 +100,7 @@ const actions = {
     commit('COMMIT_TASK_ENTRIES_TO_FILE');
   },
   deleteItem({commit}, payload){
+    console.log('deleteItem() dummy');
     return null;
   },
   setSelectedItemDetails({commit}, payload){

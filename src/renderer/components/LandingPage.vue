@@ -1,14 +1,13 @@
 <template>
   <div class="main-page">
     <SideBar></SideBar>
-    <h1 class="board-title" @click="showModal(editProjectModal)">{{selectedProjectName}}</h1>
+    <h1 class="board-title" @click="loadModal(blankObject, editProjectModal)">{{selectedProjectName}}</h1>
     <WorkItemBoard></WorkItemBoard>
     <EditWorkItemModal></EditWorkItemModal>
     <EditStatusListModal></EditStatusListModal>
     <DeleteItemModal></DeleteItemModal>
     <EditProjectModal></EditProjectModal>
-      <h2>Current Item ID: {{selectedItemID}}</h2>
-    <h3>Current List ID: {{selectedStatusListID}}</h3>
+      <h2>Current Item ID: {{selectedItem.id}}</h2>
   </div>
 </template>
 
@@ -34,18 +33,19 @@ export default {
     WorkItemBoard
   },
   methods: {
-    ...mapActions(["loadTaskEntriesFromFile"]),
-    showModal(modalID) {
+    ...mapActions(["loadTaskEntriesFromFile", "setSelectedItemDetails"]),
+    loadModal(item, modalID){
+      this.setSelectedItemDetails(item);
       this.$bvModal.show(modalID);
-    }
+    },
   },
   computed: {
     ...mapState([
       "taskEntries",
       "selectedProjectName",
       "editProjectModal",
-      "selectedItemID",
-      "selectedStatusListID"
+      "selectedItem",
+      "blankObject"
     ])
   },
   mounted: function() {

@@ -11,28 +11,28 @@
     title="Edit Status List"
   >
     <p>Status List Title</p>
-    <b-form-input></b-form-input>
+    <b-form-input :value="selectedItem.name"></b-form-input>
     <template v-slot:modal-footer="{ ok, cancel }">
-      <b-button @click="ok(); callEditItem()">OK</b-button>
+      <b-button @click="ok(); editItem(selectedItem)">OK</b-button>
       <b-button @click="cancel()">Cancel</b-button>
     </template>
-    
   </b-modal>
 </template>
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapActions, mapGetters } = createNamespacedHelpers('Tasks');
+const { mapState, mapActions, mapGetters } = createNamespacedHelpers("Tasks");
 
 export default {
   name: "EditStatusListModal",
   data() {
-    return {
-
-    };
+    return {};
+  },
+  methods: {
+    ...mapActions(["editItem"])
   },
   computed: {
-    ...mapState(['editStatusListModal'])
+    ...mapState(["editStatusListModal", "selectedItem"])
   }
 };
 </script>
