@@ -2,12 +2,13 @@
   <div class="main-page">
     <SideBar></SideBar>
     <h1 class="board-title" @click="showModal(editProjectModal)">{{selectedProjectName}}</h1>
-    <h2>Current Item ID: {{selectedItemID}}</h2>
     <WorkItemBoard></WorkItemBoard>
     <EditWorkItemModal></EditWorkItemModal>
     <EditStatusListModal></EditStatusListModal>
     <DeleteItemModal></DeleteItemModal>
     <EditProjectModal></EditProjectModal>
+      <h2>Current Item ID: {{selectedItemID}}</h2>
+    <h3>Current List ID: {{selectedStatusListID}}</h3>
   </div>
 </template>
 
@@ -17,8 +18,8 @@ const { mapState, mapActions, mapGetters } = createNamespacedHelpers("Tasks");
 
 import DeleteItemModal from "./DeleteItemModal";
 import EditProjectModal from "./EditProjectModal";
-import EditStatusListModal from "./EditStatusListModal"
-import EditWorkItemModal from "./EditWorkItemModal"
+import EditStatusListModal from "./EditStatusListModal";
+import EditWorkItemModal from "./EditWorkItemModal";
 import SideBar from "./SideBar";
 import WorkItemBoard from "./WorkItemBoard";
 
@@ -33,7 +34,7 @@ export default {
     WorkItemBoard
   },
   methods: {
-    ...mapActions(['loadTaskEntriesFromFile']),
+    ...mapActions(["loadTaskEntriesFromFile"]),
     showModal(modalID) {
       this.$bvModal.show(modalID);
     }
@@ -43,9 +44,11 @@ export default {
       "taskEntries",
       "selectedProjectName",
       "editProjectModal",
-      "selectedItemID"])
+      "selectedItemID",
+      "selectedStatusListID"
+    ])
   },
-  mounted: function(){
+  mounted: function() {
     this.loadTaskEntriesFromFile();
   }
 };
@@ -55,7 +58,7 @@ export default {
 .main-page {
   font-weight: bold;
   color: rgb(235, 235, 235);
-  margin-left: 250px; /* Same as the width of the sidebar */
+  margin-left: 350px; /* Same as the width of the sidebar */
 }
 .board-title {
   text-align: left;

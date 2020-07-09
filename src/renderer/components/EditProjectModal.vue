@@ -11,24 +11,38 @@
     title="Edit Project"
   >
     <p>Project Title</p>
-    <b-form-input placeholder="Project Title"></b-form-input>
-    
+    <b-form-input :value="selectedItemName"></b-form-input>
+    <template v-slot:modal-footer="{ ok, cancel }">
+      <b-button @click="ok(); callEditItem()">OK</b-button>
+      <b-button @click="cancel()">Cancel</b-button>
+    </template>
   </b-modal>
 </template>
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapActions, mapGetters } = createNamespacedHelpers('Tasks');
+const { mapState, mapActions, mapGetters } = createNamespacedHelpers("Tasks");
 
 export default {
   name: "EditProjectModal",
   data() {
-    return {
-
-    };
+    return {};
+  },
+  methods: {
+    ...mapActions(["editItem"]),
+    callEditItem(){
+      this.editItem({
+        id: this.selectedItemID,
+        name: this.selectedItemName,
+        type: 'project',
+        color: '',
+        filepath: '',
+        description: ''
+      })
+    }
   },
   computed: {
-    ...mapState(['editProjectModal'])
+    ...mapState(["editProjectModal", "selectedItemName", "selectedItemID", "selectedItemType"]),
   }
 };
 </script>

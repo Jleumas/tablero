@@ -10,7 +10,11 @@
     centered
     title="Delete Item"
   >
-    <p>Project Title</p>
+    <p>Are you sure you want to delete {{selectedItemName}}?</p>
+    <template v-slot:modal-footer="{ ok, cancel }">
+      <b-button @click="ok(); deleteItem(selectedItem)">OK</b-button>
+      <b-button @click="cancel()">Cancel</b-button>
+    </template>
   </b-modal>
 </template>
 
@@ -23,8 +27,11 @@ export default {
   data() {
     return {};
   },
+  methods: {
+    ...mapActions(["editItem"]),
+  },
   computed: {
-    ...mapState(["deleteItemModal"])
+    ...mapState(["deleteItemModal", "selectedItemName", "selectedItemID", "selectedItemType", "deleteItem"])
   }
 };
 </script>

@@ -1,11 +1,17 @@
 <template>
   <div class="sidenav">
-    <h4 v-for="project in taskEntries.projects" :key="project.projectName" @click="setSelectedItemID(project.id)">
-      <span @click="setSelectedProject(project.projectName)">{{project.projectName}}</span>
-      <b-icon-pencil-square @click="showModal(editProjectModal)"></b-icon-pencil-square>
-      <b-icon-trash @click="showModal(deleteItemModal)"></b-icon-trash>
+    <h4
+      v-for="project in taskEntries.projects"
+      :key="project.projectName"
+      @click="setSelectedItemDetails(project)"
+    >
+      <span @click="setSelectedProject(project.name)">{{project.name}}</span>
+      <b-icon-pencil-square @click="loadModal(project, editProjectModal)"></b-icon-pencil-square>
+      <b-icon-trash @click="loadModal(project, deleteItemModal)"></b-icon-trash>
     </h4>
-    <h4><b-icon-plus-square @click="showModal(editProjectModal);setSelectedItemID(0)"></b-icon-plus-square></h4>
+    <h4>
+      <b-icon-plus-square @click="loadModal(blankObject, editProjectModal)"></b-icon-plus-square>
+    </h4>
   </div>
 </template>
 
@@ -15,20 +21,21 @@ const { mapState, mapActions, mapGetters } = createNamespacedHelpers("Tasks");
 
 export default {
   methods: {
-    ...mapActions(["setSelectedProject", "setSelectedItemID"]),
-    showModal(modalID) {
+    ...mapActions(["setSelectedProject", "setSelectedItemDetails"]),
+    loadModal(item, modalID){
+      this.setSelectedItemDetails(item);
       this.$bvModal.show(modalID);
     }
   },
   updated: function() {
-    this.setSelectedProject(this.taskEntries.projects[0].projectName);
+    this.setSelectedProject(this.taskEntries.projects[0].name);
   },
   computed: {
     ...mapState([
       "taskEntries",
-      "selectedProjectName",
       "deleteItemModal",
-      "editProjectModal"
+      "editProjectModal", 
+      "blankObject"
     ])
   }
 };
@@ -37,7 +44,7 @@ export default {
 <style scoped>
 .sidenav {
   height: 100%;
-  min-width: 250px;
+  min-width: 350px;
   position: fixed;
   z-index: 1;
   top: 0;

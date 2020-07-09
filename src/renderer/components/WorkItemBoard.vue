@@ -3,8 +3,8 @@
     <div class="board-group" v-for="(taskEntryList, key) in selectedProjectTaskEntries" :key="key">
       <h3
         class="board-group-title"
-        @click="showModal(editStatusListModal)"
-      >{{taskEntryList.listTitle}}</h3>
+        @click="loadModal(taskEntryList, editStatusListModal)"
+      >{{taskEntryList.name}}</h3>
 
       <draggable
         class="list-group"
@@ -20,10 +20,12 @@
             v-for="workItem in taskEntryList.workItems"
             :key="workItem.id"
             :list="taskEntryList.workItems"
-            @click="showModal(editWorkItemModal);setSelectedItemID(workItem.id)"
+            @click="loadModal(workItem, editWorkItemModal)"
           >
             <h4 class="card-title">
               <span style="flex-grow: 8">{{workItem.name}}</span>
+              <b-icon-pencil-square @click="loadModal(workItem, editWorkItemModal)"></b-icon-pencil-square>
+              <b-icon-trash @click.stop="loadModal(workItem, deleteItemModal)"></b-icon-trash>
             </h4>
 
             <p class="card-text">{{workItem.description}}</p>
@@ -35,13 +37,13 @@
         </transition-group>
       </draggable>
       <h4>
-        <b-icon-plus-square @click="showModal(editWorkItemModal);setSelectedItemID(0)"></b-icon-plus-square>
+        <b-icon-plus-square @click="loadModal(blankObject, editWorkItemModal)"></b-icon-plus-square>
       </h4>
     </div>
 
     <div id="addNewList">
       <h3 class="board-group-title">
-        <b-icon-plus-square @click="showModal(editStatusListModal);setSelectedItemID(0)"></b-icon-plus-square>
+        <b-icon-plus-square @click="loadModal(blankObject, editStatusListModal)"></b-icon-plus-square>
       </h3>
     </div>
   </div>
@@ -59,7 +61,15 @@ export default {
     draggable
   },
   methods: {
-    ...mapActions(["setSelectedItemID", "commitTaskEntriesToFile"]),
+    loadModal(item, modalID){
+      this.setSelectedItemDetails(item);
+      this.$bvModal.show(modalID);
+    },
+    ...mapActions([
+      "setSelectedItemDetails",
+      "commitTaskEntriesToFile"
+    ]),
+    //not used anymore, can delete
     showModal(modalID) {
       this.$bvModal.show(modalID);
     },
@@ -91,7 +101,8 @@ export default {
       "selectedProjectTaskEntries",
       "deleteItemModal",
       "editWorkItemModal",
-      "editStatusListModal"
+      "editStatusListModal",
+      "blankObject"
     ]),
     dragOptions() {
       //The line below will break the function here since taskEntries isn't defined in this component

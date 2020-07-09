@@ -3,60 +3,119 @@ var fs = require("fs");
 
 const state = {
   taskEntries: {},
-  selectedItemID: '',
   selectedProjectName: '',
   selectedProjectTaskEntries: {},
+
+  selectedItemName: '',
+  selectedItemID: '',
+  selectedItemType: '',
+  selectedItemDescription: '',
+  selectedItemFilepath: '',
+  selectedItemColor: '',
+
   deleteItemModal: "deleteItemModal",
   editWorkItemModal: "editWorkItemModal",
   editStatusListModal: "editStatusListModal",
-  editProjectModal: "editProjectModal"
+  editProjectModal: "editProjectModal",
+
+  blankObject: {
+    name: '',
+    id: '',
+    type: '',
+    description: '',
+    filepath: '',
+    color: ''
+  }
+}
+
+const getters = {
+
 }
 
 const mutations = {
-  LOAD_TASK_ENTRIES_FROM_FILE(state){
+  CREATE_ITEM(state, payload){
+    state.taskEntries.projects.push({
+      "name": payload.name,
+      "id": Math.floor(Math.random()*100000),
+      "type": payload.type,
+      "description": payload.description,
+      "filepath": payload.filepath,
+      "color": payload.color
+    });
+    console.log('Hello from CREATE_ITEM!');
+  },
+  UPDATE_ITEM(state, payload){
+    for (let i = 0; i < state.taskEntries.projects.length; i++){
+      if (state.taskEntries.projects[i].id == state.id){
+        state.taskEntries.projects[i].projectName = state.payload.name;
+      }
+    }
+  },
+  //KEEP
+  LOAD_TASK_ENTRIES_FROM_FILE(state) {
     let filepath = 'task_entries.json';
     fs.readFile(filepath, "utf8", (err, data) => {
       if (err) throw err;
       state.taskEntries = JSON.parse(data);
     });
-
-    //state.selectedProjectName = state.taskEntries.projects[0].projectName;
   },
-  COMMIT_TASK_ENTRIES_TO_FILE(state){
-    let filepath = 'task_entries.json';
-    fs.writeFileSync(filepath, JSON.stringify(state.taskEntries), "utf8", err => {
-      if (err) throw err;
-      console.log(`${filepath} saved`);
-    });
+  //KEEP
+  COMMIT_TASK_ENTRIES_TO_FILE(state) {
+    console.log('Saving is currently disabled for your own damn good!');
+    // let filepath = 'task_entries.json';
+    // fs.writeFileSync(filepath, JSON.stringify(state.taskEntries), "utf8", err => {
+    //   if (err) throw err;
+    //   console.log(`${filepath} saved`);
+    // });
   },
-  SET_SELECTED_ITEM_ID(state, payload){
-    state.selectedItemID = payload;
+  //KEEP
+  SET_SELECTED_ITEM_DETAILS(state, payload) {
+    state.selectedItem = payload;
+    state.selectedItemName = payload.name;
+    state.selectedItemID = payload.id;
+    state.selectedItemType = payload.type;
+    state.selectedItemDescription = payload.description;
+    state.selectedItemFilepath = payload.filepath;
+    state.selectedItemColor = payload.color;
   },
-  SET_SELECTED_PROJECT(state, payload){
+  //KEEP
+  SET_SELECTED_PROJECT(state, payload) {
     state.selectedProjectName = payload;
 
     let numberOfProjects = state.taskEntries.projects.length;
     let projects = state.taskEntries.projects;
     for (let i = 0; i < numberOfProjects; i++) {
-      if (projects[i].projectName == payload) {
-        state.selectedProjectTaskEntries =  projects[i].statusLists;
+      if (projects[i].name == payload) {
+        state.selectedProjectTaskEntries = projects[i].statusLists;
       }
     }
   }
 }
 
 const actions = {
-  loadTaskEntriesFromFile({commit}){
-    commit('LOAD_TASK_ENTRIES_FROM_FILE');
-  },
-  commitTaskEntriesToFile({commit}){
+  //KEEP
+  editItem({commit}, payload){
+    if (payload.id === 0) commit('CREATE_ITEM', payload);
+      else commit('UPDATE_ITEM', payload);
     commit('COMMIT_TASK_ENTRIES_TO_FILE');
   },
-  setSelectedProject({commit}, payload){
-    commit('SET_SELECTED_PROJECT', payload);
+  deleteItem({commit}, payload){
+    return null;
   },
-  setSelectedItemID({commit}, payload){
-    commit('SET_SELECTED_ITEM_ID', payload);
+  setSelectedItemDetails({commit}, payload){
+    commit('SET_SELECTED_ITEM_DETAILS', payload)
+  },
+  //KEEP
+  loadTaskEntriesFromFile({ commit }) {
+    commit('LOAD_TASK_ENTRIES_FROM_FILE');
+  },
+  //KEEP
+  commitTaskEntriesToFile({ commit }) {
+    commit('COMMIT_TASK_ENTRIES_TO_FILE');
+  },
+  //KEEP
+  setSelectedProject({ commit }, payload) {
+    commit('SET_SELECTED_PROJECT', payload);
   }
 }
 
@@ -64,5 +123,6 @@ export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 }

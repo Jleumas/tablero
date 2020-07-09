@@ -11,7 +11,11 @@
     title="Edit Status List"
   >
     <p>Status List Title</p>
-    <b-form-input placeholder="Status List"></b-form-input>
+    <b-form-input></b-form-input>
+    <template v-slot:modal-footer="{ ok, cancel }">
+      <b-button @click="ok(); callEditItem()">OK</b-button>
+      <b-button @click="cancel()">Cancel</b-button>
+    </template>
     
   </b-modal>
 </template>
