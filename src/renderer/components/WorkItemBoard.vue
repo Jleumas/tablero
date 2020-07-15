@@ -70,7 +70,7 @@
 <script>
 var exec = require("child_process").exec;
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapActions, mapGetters } = createNamespacedHelpers("Tasks");
+const { mapState, mapActions } = createNamespacedHelpers("Tasks");
 import draggable from "vuedraggable";
 
 export default {
@@ -139,6 +139,9 @@ export default {
       };
     },
     statusListColor: {
+      get(){
+        return null;
+      },
       set(value) {
         this.selectedItemBinding({ value: value, key: "color" });
       }

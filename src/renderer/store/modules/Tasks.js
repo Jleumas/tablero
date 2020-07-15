@@ -143,10 +143,22 @@ const mutations = {
   //KEEP --- WORKING
   LOAD_TASK_ENTRIES_FROM_FILE(state) {
     let filepath = 'task_entries.json';
-    fs.readFile(filepath, "utf8", (err, data) => {
-      if (err) throw err;
-      state.taskEntries = JSON.parse(data);
-    });
+    if (fs.existsSync(filepath)){
+      fs.readFile(filepath, "utf8", (err, data) => {
+        if (err) throw err;
+        state.taskEntries = JSON.parse(data);
+      });
+    }
+    else
+    {
+      console.log('reached else');
+      let task_entries_template = '{"projects":[]}';
+      fs.writeFile(filepath, JSON.parse(task_entries_template), "utf8", err => {
+        if (err) throw err;
+        state.taskEntries = JSON.parse(task_entries_template);
+        console.log("new file created");
+      })
+    }
   },
   //KEEP --- WORKING
   COMMIT_TASK_ENTRIES_TO_FILE(state) {
@@ -182,13 +194,10 @@ const mutations = {
 }
 
 const actions = {
-  //TODO
-  recursiveJSONsearch({ commit }, paylod) {
-    return null;
-  },
-  //TODO
+  //KEEP --- WORKING
   deleteItem({ commit }, payload) {
     commit('DELETE_ITEM', payload);
+    commit('CLEAR_BLANK_OBJECT');
   },
   //KEEP --- WORKING
   selectedItemBinding({ commit }, payload) {

@@ -15,7 +15,7 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapActions, mapGetters } = createNamespacedHelpers("Tasks");
+const { mapState, mapActions } = createNamespacedHelpers("Tasks");
 
 import DeleteItemModal from "./DeleteItemModal";
 import EditProjectModal from "./EditProjectModal";

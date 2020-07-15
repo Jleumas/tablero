@@ -21,7 +21,7 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapActions, mapGetters } = createNamespacedHelpers("Tasks");
+const { mapState, mapActions } = createNamespacedHelpers("Tasks");
 
 export default {
   name: "EditStatusListModal",
