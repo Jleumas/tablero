@@ -1,6 +1,6 @@
 <template>
   <div class="sidenav">
-    <h4
+    <h3
       class="projectTitle"
       v-for="project in taskEntries.projects"
       :key="project.projectName"
@@ -9,7 +9,7 @@
       <span style="flex-grow: 10" @click="setSelectedProject(project.name)">{{project.name}}</span>
       <b-icon-pencil-square @click="loadModal(project, editProjectModal)"></b-icon-pencil-square>
       <b-icon-trash @click="loadModal(project, deleteItemModal)"></b-icon-trash>
-    </h4>
+    </h3>
     <h4>
       <b-icon-plus-square @click="loadModal(blankObject, editProjectModal)"></b-icon-plus-square>
     </h4>

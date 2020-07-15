@@ -2,7 +2,23 @@
   <div class="board">
     <div class="board-group" v-for="(taskEntryList, key) in selectedProjectTaskEntries" :key="key">
       <h3 class="board-group-title">
-        <span style="flex-grow: 10" @click="loadModal('', taskEntryList, editStatusListModal)">{{taskEntryList.name}}</span>
+        <span
+          style="flex-grow: 10"
+          @click="loadModal('', taskEntryList, editStatusListModal)"
+        >{{taskEntryList.name}}</span>
+
+        <div>
+          <label for="colorPicker">
+            <b-icon-brush @click="setSelectedItemDetails(taskEntryList)"></b-icon-brush>
+          </label>
+          <b-form-input
+            type="color"
+            id="colorPicker"
+            style="display: none;"
+            v-model="statusListColor"
+          ></b-form-input>
+        </div>
+
         <b-icon-pencil-square @click="loadModal('', taskEntryList, editStatusListModal)"></b-icon-pencil-square>
         <b-icon-trash @click.stop="loadModal('', taskEntryList, deleteItemModal)"></b-icon-trash>
       </h3>
@@ -42,10 +58,11 @@
       </h4>
     </div>
 
-    <div id="addNewList">
-      <h3 class="board-group-title">
-        <b-icon-plus-square @click="loadModal(selectedProjectID, blankObject, editStatusListModal)"></b-icon-plus-square>
-      </h3>
+    <div id="addNewList"  @click="loadModal(selectedProjectID, blankObject, editStatusListModal)">
+      <h3>New Status</h3>
+      <h4 class="board-group">
+        <b-icon-plus-square></b-icon-plus-square>
+      </h4>
     </div>
   </div>
 </template>
@@ -69,7 +86,7 @@ export default {
       this.setSelectedItemDetails(item);
       this.$bvModal.show(modalID);
     },
-    ...mapActions(["setSelectedItemDetails", "commitTaskEntriesToFile"]),
+    ...mapActions(["setSelectedItemDetails", "commitTaskEntriesToFile", "selectedItemBinding"]),
     //not used anymore, can delete
     showModal(modalID) {
       this.$bvModal.show(modalID);
@@ -120,6 +137,11 @@ export default {
         disabled: false,
         ghostClass: "ghost"
       };
+    },
+    statusListColor: {
+      set(value) {
+        this.selectedItemBinding({ value: value, key: "color" });
+      }
     }
   }
 };

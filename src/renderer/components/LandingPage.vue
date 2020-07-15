@@ -1,7 +1,10 @@
 <template>
   <div class="main-page">
     <SideBar></SideBar>
-    <h1 class="board-title" @click="loadModal(blankObject, editProjectModal)">{{selectedProjectName}}</h1>
+    <h1
+      class="board-title"
+      @click="loadModal('', blankObject, editProjectModal)"
+    >{{selectedProjectName}}</h1>
     <WorkItemBoard></WorkItemBoard>
     <EditWorkItemModal></EditWorkItemModal>
     <EditStatusListModal></EditStatusListModal>
@@ -33,10 +36,13 @@ export default {
   },
   methods: {
     ...mapActions(["loadTaskEntriesFromFile", "setSelectedItemDetails"]),
-    loadModal(item, modalID){
+    loadModal(parentID, item, modalID) {
+      if (parentID != "") {
+        item.parentItemID = '1';
+      }
       this.setSelectedItemDetails(item);
       this.$bvModal.show(modalID);
-    },
+    }
   },
   computed: {
     ...mapState([

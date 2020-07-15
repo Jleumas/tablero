@@ -37,14 +37,15 @@ const getters = {
 }
 
 const mutations = {
-  CLEAR_SELECTED_ITEM(state) {
-    state.selectedItem.name = '';
-    state.selectedItem.id = '';
-    state.selectedItem.type = '';
-    state.selectedItem.description = '';
-    state.selectedItem.filepath = '';
-    state.selectedItem.color = '';
-    state.selectedItem.parentItemID = '';
+  //KEEP --- WORKING
+  CLEAR_BLANK_OBJECT(state){
+    state.blankObject.name = '';
+    state.blankObject.id = '';
+    state.blankObject.type = '';
+    state.blankObject.description = '';
+    state.blankObject.filepath = '';
+    state.blankObject.color = '';
+    state.blankObject.parentItemID = '';
   },
   //KEEP --- WORKING
   DELETE_ITEM(state, payload) {
@@ -74,9 +75,6 @@ const mutations = {
           }
         }
       }
-    }
-    else {
-      console.log(`Type ${payload.type} does not exist!!`);
     }
   },
   //KEEP --- WORKING
@@ -198,9 +196,11 @@ const actions = {
   },
   //KEEP --- TEST
   createItem({ commit }, payload) {
-    if (payload.id == '') commit('CREATE_ITEM', payload);
+    if (payload.id == '') {
+      commit('CREATE_ITEM', payload);
+      commit('CLEAR_BLANK_OBJECT');
+    }
     commit('COMMIT_TASK_ENTRIES_TO_FILE');
-    commit('CLEAR_SELECTED_ITEM');
   },
   //KEEP --- WORKING
   setSelectedItemDetails({ commit }, payload) {
