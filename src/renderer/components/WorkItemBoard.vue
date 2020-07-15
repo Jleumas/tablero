@@ -113,9 +113,6 @@ export default {
       "blankObject"
     ]),
     dragOptions() {
-      //The line below will break the function here since taskEntries isn't defined in this component
-      //need a workaround to save the JSON on drop
-      //this.saveJSON("task_entries.json", this.taskEntries);
       this.commitTaskEntriesToFile();
       return {
         animation: 0,

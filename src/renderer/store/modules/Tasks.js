@@ -37,7 +37,7 @@ const getters = {
 }
 
 const mutations = {
-  CLEAR_SELECTED_ITEM(state){
+  CLEAR_SELECTED_ITEM(state) {
     state.selectedItem.name = '';
     state.selectedItem.id = '';
     state.selectedItem.type = '';
@@ -46,15 +46,40 @@ const mutations = {
     state.selectedItem.color = '';
     state.selectedItem.parentItemID = '';
   },
-  //TODO
+  //KEEP --- WORKING
   DELETE_ITEM(state, payload) {
-    return null;
+    if (payload.type == 'project') {
+      for (var i = 0; i < state.taskEntries.projects.length; i++) {
+        if (state.taskEntries.projects[i].id == payload.id) {
+          state.taskEntries.projects.splice(i, 1);
+        }
+      }
+    }
+    else if (payload.type == 'statusList') {
+      for (var i = 0; i < state.taskEntries.projects.length; i++) {
+        for (var j = 0; j < state.taskEntries.projects[i].statusLists.length; j++) {
+          if (state.taskEntries.projects[i].statusLists[j].id == payload.id) {
+            state.taskEntries.projects[i].statusLists.splice(j, 1);
+          }
+        }
+      }
+    }
+    else if (payload.type == 'workItem') {
+      for (var i = 0; i < state.taskEntries.projects.length; i++) {
+        for (var j = 0; j < state.taskEntries.projects[i].statusLists.length; j++) {
+          for (var k = 0; k < state.taskEntries.projects[i].statusLists[j].workItems.length; k++) {
+            if (state.taskEntries.projects[i].statusLists[j].workItems[k].id == payload.id) {
+              state.taskEntries.projects[i].statusLists[j].workItems.splice(k, 1);
+            }
+          }
+        }
+      }
+    }
+    else {
+      console.log(`Type ${payload.type} does not exist!!`);
+    }
   },
-  //WORKS?
-  GENERATE_ID() {
-    return String(Math.floor(Math.random() * 100000));
-  },
-  //NEED TO TEST
+  //KEEP --- WORKING
   CREATE_ITEM(state, payload) {
     if (payload.type == 'project') {
       state.taskEntries.projects.push({
@@ -104,7 +129,6 @@ const mutations = {
     else {
       console.log(`Type ${payload.type} does not exist!!`);
     }
-    state.selectedItem = state.blankObject;
   },
   //KEEP --- WORKING
   SELECTED_ITEM_BINDING(state, payload) {
