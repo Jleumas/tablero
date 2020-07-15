@@ -19,7 +19,7 @@
     <b-form-input v-model="itemFilepath" @drop="onDrop"></b-form-input>
 
     <template v-slot:modal-footer="{ ok, cancel }">
-      <b-button @click="ok()">OK</b-button>
+      <b-button @click="ok(); callCreateItem(selectedItem);">OK</b-button>
       <b-button @click="cancel()">Cancel</b-button>
     </template>
   </b-modal>
@@ -36,10 +36,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["editItem", "selectedItemBinding"]),
+    ...mapActions(["createItem", "selectedItemBinding"]),
     onDrop(event) {
       event.preventDefault();
       this.selectedItemBinding({ value: event.dataTransfer.files[0].path, key: "filepath" });
+    },
+    callCreateItem(newItem){
+      newItem.type = 'workItem';
+      this.createItem(newItem);
     }
   },
   watch: {

@@ -1,11 +1,12 @@
 <template>
   <div class="sidenav">
     <h4
+      class="projectTitle"
       v-for="project in taskEntries.projects"
       :key="project.projectName"
       @click="setSelectedItemDetails(project)"
     >
-      <span @click="setSelectedProject(project.name)">{{project.name}}</span>
+      <span style="flex-grow: 10" @click="setSelectedProject(project.name)">{{project.name}}</span>
       <b-icon-pencil-square @click="loadModal(project, editProjectModal)"></b-icon-pencil-square>
       <b-icon-trash @click="loadModal(project, deleteItemModal)"></b-icon-trash>
     </h4>
@@ -22,8 +23,14 @@ const { mapState, mapActions, mapGetters } = createNamespacedHelpers("Tasks");
 export default {
   methods: {
     ...mapActions(["setSelectedProject", "setSelectedItemDetails"]),
-    loadModal(item, modalID){
-      this.setSelectedItemDetails(item);
+    loadModal(item, modalID) {
+      if (item == this.blankObject) {
+        this.setSelectedItemDetails(
+          JSON.parse(JSON.stringify(this.blankObject))
+        );
+      } else {
+        this.setSelectedItemDetails(item);
+      }
       this.$bvModal.show(modalID);
     }
   },
@@ -34,7 +41,7 @@ export default {
     ...mapState([
       "taskEntries",
       "deleteItemModal",
-      "editProjectModal", 
+      "editProjectModal",
       "blankObject",
       "selectedItem"
     ])
@@ -43,9 +50,13 @@ export default {
 </script>
 
 <style scoped>
+.projectTitle {
+  display: flex;
+  margin: 0px 20px 0px 20px;
+}
 .sidenav {
   height: 100%;
-  min-width: 350px;
+  min-width: 300px;
   position: fixed;
   z-index: 1;
   top: 0;

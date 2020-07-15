@@ -1,9 +1,9 @@
-//import task_entries from "../../../../task_entries.json"
 var fs = require("fs");
 
 const state = {
   taskEntries: {},
   selectedProjectName: '',
+  selectedProjectID: '',
   selectedProjectTaskEntries: {},
 
   selectedItem: {
@@ -12,7 +12,8 @@ const state = {
     type: '',
     description: '',
     filepath: '',
-    color: ''
+    color: '',
+    parentItemID: ''
   },
 
   deleteItemModal: "deleteItemModal",
@@ -26,7 +27,8 @@ const state = {
     type: '',
     description: '',
     filepath: '',
-    color: ''
+    color: '',
+    parentItemID: ''
   }
 }
 
@@ -35,27 +37,80 @@ const getters = {
 }
 
 const mutations = {
+  CLEAR_SELECTED_ITEM(state){
+    state.selectedItem.name = '';
+    state.selectedItem.id = '';
+    state.selectedItem.type = '';
+    state.selectedItem.description = '';
+    state.selectedItem.filepath = '';
+    state.selectedItem.color = '';
+    state.selectedItem.parentItemID = '';
+  },
   //TODO
   DELETE_ITEM(state, payload) {
     return null;
   },
+  //WORKS?
+  GENERATE_ID() {
+    return String(Math.floor(Math.random() * 100000));
+  },
   //NEED TO TEST
   CREATE_ITEM(state, payload) {
-    state.taskEntries.projects.push({
-      "name": payload.name,
-      "id": Math.floor(Math.random() * 100000),
-      "type": payload.type,
-      "description": payload.description,
-      "filepath": payload.filepath,
-      "color": payload.color
-    });
-    console.log('Hello from CREATE_ITEM!');
+    if (payload.type == 'project') {
+      state.taskEntries.projects.push({
+        "name": payload.name,
+        "id": String(Math.floor(Math.random() * 100000)),
+        "type": payload.type,
+        "description": payload.description,
+        "filepath": payload.filepath,
+        "color": payload.color,
+        "parentItemID": "1",
+        "statusLists": []
+      })
+    }
+    else if (payload.type == 'statusList') {
+      for (var proj of state.taskEntries.projects) {
+        if (proj.id == payload.parentItemID) {
+          proj.statusLists.push({
+            "name": payload.name,
+            "id": String(Math.floor(Math.random() * 100000)),
+            "type": payload.type,
+            "description": payload.description,
+            "filepath": payload.filepath,
+            "color": payload.color,
+            "parentItemID": payload.parentItemID,
+            "workItems": []
+          })
+        }
+      }
+    }
+    else if (payload.type == 'workItem') {
+      for (var proj of state.taskEntries.projects) {
+        for (var statList of proj.statusLists) {
+          if (statList.id == payload.parentItemID) {
+            statList.workItems.push({
+              "name": payload.name,
+              "id": String(Math.floor(Math.random() * 100000)),
+              "type": payload.type,
+              "description": payload.description,
+              "filepath": payload.filepath,
+              "color": payload.color,
+              "parentItemID": payload.parentItemID
+            })
+          }
+        }
+      }
+    }
+    else {
+      console.log(`Type ${payload.type} does not exist!!`);
+    }
+    state.selectedItem = state.blankObject;
   },
   //KEEP --- WORKING
   SELECTED_ITEM_BINDING(state, payload) {
     state.selectedItem[payload.key] = payload.value;
   },
-  //need to fix this, maybe use selected_item_binding instead????
+  //might be able to delete
   UPDATE_ITEM(state, payload) {
     for (let i = 0; i < state.taskEntries.projects.length; i++) {
       if (state.taskEntries.projects[i].id == state.id) {
@@ -79,7 +134,7 @@ const mutations = {
     }
     else {
       let filepath = 'task_entries.json';
-      fs.writeFileSync(filepath, JSON.stringify(state.taskEntries), "utf8", err => {
+      fs.writeFile(filepath, JSON.stringify(state.taskEntries), "utf8", err => {
         if (err) throw err;
         console.log(`${filepath} saved`);
       });
@@ -98,6 +153,7 @@ const mutations = {
     for (let i = 0; i < numberOfProjects; i++) {
       if (projects[i].name == payload) {
         state.selectedProjectTaskEntries = projects[i].statusLists;
+        state.selectedProjectID = projects[i].id;
       }
     }
   }
@@ -105,23 +161,22 @@ const mutations = {
 
 const actions = {
   //TODO
-  recursiveJSONsearch({commit}, paylod){
+  recursiveJSONsearch({ commit }, paylod) {
     return null;
   },
   //TODO
   deleteItem({ commit }, payload) {
-    console.log('deleteItem() dummy');
-    return null;
+    commit('DELETE_ITEM', payload);
   },
   //KEEP --- WORKING
   selectedItemBinding({ commit }, payload) {
     commit('SELECTED_ITEM_BINDING', payload);
   },
   //KEEP --- TEST
-  editItem({ commit }, payload) {
-    if (payload.id === 0) commit('CREATE_ITEM', payload);
-    else commit('UPDATE_ITEM', payload);
+  createItem({ commit }, payload) {
+    if (payload.id == '') commit('CREATE_ITEM', payload);
     commit('COMMIT_TASK_ENTRIES_TO_FILE');
+    commit('CLEAR_SELECTED_ITEM');
   },
   //KEEP --- WORKING
   setSelectedItemDetails({ commit }, payload) {

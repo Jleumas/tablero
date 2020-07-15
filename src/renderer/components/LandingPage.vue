@@ -7,7 +7,6 @@
     <EditStatusListModal></EditStatusListModal>
     <DeleteItemModal></DeleteItemModal>
     <EditProjectModal></EditProjectModal>
-      <!-- <h2>Current Item ID: {{selectedItem.id}}</h2> -->
   </div>
 </template>
 

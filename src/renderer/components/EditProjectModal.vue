@@ -11,9 +11,9 @@
     title="Edit Project"
   >
     <p>Project Title</p>
-    <b-form-input :value="selectedItem.name"></b-form-input>
+    <b-form-input v-model="itemName"></b-form-input>
     <template v-slot:modal-footer="{ ok, cancel }">
-      <b-button @click="ok(); callEditItem()">OK</b-button>
+      <b-button @click="ok(); callCreateItem(selectedItem)">OK</b-button>
       <b-button @click="cancel()">Cancel</b-button>
     </template>
   </b-modal>
@@ -29,20 +29,23 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(["editItem"]),
-    callEditItem(){
-      this.editItem({
-        id: this.selectedItem.id,
-        name: this.selectedItem.name,
-        type: 'project',
-        color: '',
-        filepath: '',
-        description: ''
-      })
+    ...mapActions(["createItem", "selectedItemBinding"]),
+    callCreateItem(newItem){
+      newItem.type = 'project';
+      newItem.parentItemID = '1';
+      this.createItem(newItem);
     }
   },
   computed: {
     ...mapState(["editProjectModal", "selectedItem"]),
+    itemName: {
+      get() {
+        return this.selectedItem.name;
+      },
+      set(value) {
+        this.selectedItemBinding({ value: value, key: "name" });
+      }
+    },
   }
 };
 </script>

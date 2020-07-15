@@ -1,10 +1,11 @@
 <template>
   <div class="board">
     <div class="board-group" v-for="(taskEntryList, key) in selectedProjectTaskEntries" :key="key">
-      <h3
-        class="board-group-title"
-        @click="loadModal(taskEntryList, editStatusListModal)"
-      >{{taskEntryList.name}}</h3>
+      <h3 class="board-group-title">
+        <span style="flex-grow: 10" @click="loadModal('', taskEntryList, editStatusListModal)">{{taskEntryList.name}}</span>
+        <b-icon-pencil-square @click="loadModal('', taskEntryList, editStatusListModal)"></b-icon-pencil-square>
+        <b-icon-trash @click.stop="loadModal('', taskEntryList, deleteItemModal)"></b-icon-trash>
+      </h3>
 
       <draggable
         class="list-group"
@@ -20,12 +21,12 @@
             v-for="workItem in taskEntryList.workItems"
             :key="workItem.id"
             :list="taskEntryList.workItems"
-            @click="loadModal(workItem, editWorkItemModal)"
+            @click="loadModal('', workItem, editWorkItemModal)"
           >
             <h4 class="card-title">
               <span style="flex-grow: 8">{{workItem.name}}</span>
-              <b-icon-pencil-square @click="loadModal(workItem, editWorkItemModal)"></b-icon-pencil-square>
-              <b-icon-trash @click.stop="loadModal(workItem, deleteItemModal)"></b-icon-trash>
+              <b-icon-pencil-square @click="loadModal('', workItem, editWorkItemModal)"></b-icon-pencil-square>
+              <b-icon-trash @click.stop="loadModal('', workItem, deleteItemModal)"></b-icon-trash>
             </h4>
 
             <p class="card-text">{{workItem.description}}</p>
@@ -37,13 +38,13 @@
         </transition-group>
       </draggable>
       <h4>
-        <b-icon-plus-square @click="loadModal(blankObject, editWorkItemModal)"></b-icon-plus-square>
+        <b-icon-plus-square @click="loadModal(taskEntryList.id, blankObject, editWorkItemModal)"></b-icon-plus-square>
       </h4>
     </div>
 
     <div id="addNewList">
       <h3 class="board-group-title">
-        <b-icon-plus-square @click="loadModal(blankObject, editStatusListModal)"></b-icon-plus-square>
+        <b-icon-plus-square @click="loadModal(selectedProjectID, blankObject, editStatusListModal)"></b-icon-plus-square>
       </h3>
     </div>
   </div>
@@ -61,7 +62,10 @@ export default {
     draggable
   },
   methods: {
-    loadModal(item, modalID) {
+    loadModal(parentID, item, modalID) {
+      if (parentID != "") {
+        item.parentItemID = parentID;
+      }
       this.setSelectedItemDetails(item);
       this.$bvModal.show(modalID);
     },
@@ -75,12 +79,11 @@ export default {
         return fullpath;
       }
       let pathArray = [];
-      if(fullpath.includes('/')){
+      if (fullpath.includes("/")) {
         pathArray = fullpath.split("/");
-      }
-      else{
+      } else {
         pathArray = fullpath.split("\\");
-      } 
+      }
 
       return pathArray[pathArray.length - 1];
     },
@@ -106,6 +109,7 @@ export default {
       "deleteItemModal",
       "editWorkItemModal",
       "editStatusListModal",
+      "selectedProjectID",
       "blankObject"
     ]),
     dragOptions() {
@@ -137,8 +141,9 @@ export default {
   flex-wrap: nowrap;
 }
 .board-group-title {
-  text-align: center;
-  margin: 0px 10px 0px 0px;
+  text-align: left;
+  display: flex;
+  margin: 0px 20px 0px 20px;
 }
 .card {
   color: rgb(47, 52, 55);
