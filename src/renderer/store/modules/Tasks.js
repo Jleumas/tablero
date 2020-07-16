@@ -196,7 +196,6 @@ const actions = {
   selectedItemBinding({ commit }, payload) {
     commit('SELECTED_ITEM_BINDING', payload);
     commit('COMMIT_TASK_ENTRIES_TO_FILE');
-
   },
   //KEEP --- TEST
   createItem({ commit }, payload) {

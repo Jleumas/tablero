@@ -81,14 +81,6 @@ export default {
     draggable
   },
   methods: {
-    // fileDrop(event, workItem) {
-    //   event.preventDefault();
-    //   this.setSelectedItemDetails(item);
-    //   this.selectedItemBinding({
-    //     value: event.dataTransfer.files[0].path,
-    //     key: "filepath"
-    //   });
-    // },
     loadModal(parentID, item, modalID) {
       if (parentID != "") {
         item.parentItemID = parentID;
