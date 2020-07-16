@@ -15,7 +15,7 @@
     <p>Work Item Description</p>
     <b-form-input v-model="itemDescription"></b-form-input>
     <p>Associated File</p>
-    <input id="file-selector" type="file" @drop="onDrop" />
+    <input type="file" @drop="onDrop" />
     <b-form-input v-model="itemFilepath" @drop="onDrop"></b-form-input>
 
     <template v-slot:modal-footer="{ ok, cancel }">
@@ -44,11 +44,6 @@ export default {
     callCreateItem(newItem){
       newItem.type = 'workItem';
       this.createItem(newItem);
-    }
-  },
-  watch: {
-    setFilepath(event){
-      this.selectedItemBinding({ value: event.dataTransfer.files[0].path, key: "filepath" });
     }
   },
   computed: {

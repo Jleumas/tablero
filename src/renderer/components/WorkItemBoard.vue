@@ -38,6 +38,7 @@
             :key="workItem.id"
             :list="taskEntryList.workItems"
             @click="loadModal('', workItem, editWorkItemModal)"
+            
           >
             <h4 class="card-title">
               <span style="flex-grow: 8">{{workItem.name}}</span>
@@ -53,6 +54,7 @@
           </div>
         </transition-group>
       </draggable>
+
       <h4>
         <b-icon-plus-square @click="loadModal(taskEntryList.id, blankObject, editWorkItemModal)"></b-icon-plus-square>
       </h4>
@@ -79,6 +81,14 @@ export default {
     draggable
   },
   methods: {
+    // fileDrop(event, workItem) {
+    //   event.preventDefault();
+    //   this.setSelectedItemDetails(item);
+    //   this.selectedItemBinding({
+    //     value: event.dataTransfer.files[0].path,
+    //     key: "filepath"
+    //   });
+    // },
     loadModal(parentID, item, modalID) {
       if (parentID != "") {
         item.parentItemID = parentID;
@@ -86,11 +96,11 @@ export default {
       this.setSelectedItemDetails(item);
       this.$bvModal.show(modalID);
     },
-    ...mapActions(["setSelectedItemDetails", "commitTaskEntriesToFile", "selectedItemBinding"]),
-    //not used anymore, can delete
-    showModal(modalID) {
-      this.$bvModal.show(modalID);
-    },
+    ...mapActions([
+      "setSelectedItemDetails",
+      "commitTaskEntriesToFile",
+      "selectedItemBinding"
+    ]),
     displayFilename(fullpath) {
       if (fullpath.includes("http")) {
         return fullpath;
@@ -139,7 +149,7 @@ export default {
       };
     },
     statusListColor: {
-      get(){
+      get() {
         return null;
       },
       set(value) {
@@ -202,4 +212,5 @@ export default {
   width: 300px;
   text-align: center;
 }
+#fileSelector {}
 </style>

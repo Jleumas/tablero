@@ -189,10 +189,14 @@ const actions = {
   deleteItem({ commit }, payload) {
     commit('DELETE_ITEM', payload);
     commit('CLEAR_BLANK_OBJECT');
+    commit('COMMIT_TASK_ENTRIES_TO_FILE');
+
   },
   //KEEP --- WORKING
   selectedItemBinding({ commit }, payload) {
     commit('SELECTED_ITEM_BINDING', payload);
+    commit('COMMIT_TASK_ENTRIES_TO_FILE');
+
   },
   //KEEP --- TEST
   createItem({ commit }, payload) {
