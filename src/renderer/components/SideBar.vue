@@ -1,15 +1,18 @@
 <template>
   <div class="sidenav">
-    <h3
-      class="projectTitle"
-      v-for="project in taskEntries.projects"
-      :key="project.projectName"
-      @click="setSelectedItemDetails(project)"
-    >
-      <span style="flex-grow: 10" @click="setSelectedProject(project.name)">{{project.name}}</span>
-      <b-icon-pencil-square @click="loadModal(project, editProjectModal)"></b-icon-pencil-square>
-      <b-icon-trash @click="loadModal(project, deleteItemModal)"></b-icon-trash>
-    </h3>
+      <draggable
+        class="list-group"
+        :list="taskEntries.projects"
+        v-bind="dragOptions"
+        @start="isDragging = true"
+        @end="isDragging = false"
+      >
+        <h3 class="projectTitle" @click="setSelectedItemDetails(project)" :list="taskEntries.projects" v-for="project in taskEntries.projects" :key="project.projectName">
+          <span style="flex-grow: 10" @click="setSelectedProject(project.name)">{{project.name}}</span>
+          <b-icon-pencil-square @click="loadModal(project, editProjectModal)"></b-icon-pencil-square>
+          <b-icon-trash @click="loadModal(project, deleteItemModal)"></b-icon-trash>
+        </h3>
+      </draggable>
     <h4>
       <b-icon-plus-square @click="loadModal(blankObject, editProjectModal)"></b-icon-plus-square>
     </h4>
@@ -19,10 +22,18 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 const { mapState, mapActions } = createNamespacedHelpers("Tasks");
+import draggable from "vuedraggable";
 
 export default {
+  components: {
+    draggable,
+  },
   methods: {
-    ...mapActions(["setSelectedProject", "setSelectedItemDetails"]),
+    ...mapActions([
+      "setSelectedProject",
+      "setSelectedItemDetails",
+      "commitTaskEntriesToFile"
+    ]),
     loadModal(item, modalID) {
       if (item == this.blankObject) {
         this.setSelectedItemDetails(
@@ -44,7 +55,15 @@ export default {
       "editProjectModal",
       "blankObject",
       "selectedItem"
-    ])
+    ]),
+    dragOptions() {
+      return {
+        animation: 0,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
   }
 };
 </script>
@@ -76,8 +95,16 @@ export default {
   display: block;
 }
 .sidenav div:hover {
-  padding-top: 10px;
-  padding-bottom: 10px;
   color: white;
+}
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.no-move {
+  transition: transform 0s;
+}
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
 }
 </style>

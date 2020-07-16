@@ -132,14 +132,6 @@ const mutations = {
   SELECTED_ITEM_BINDING(state, payload) {
     state.selectedItem[payload.key] = payload.value;
   },
-  //might be able to delete
-  UPDATE_ITEM(state, payload) {
-    for (let i = 0; i < state.taskEntries.projects.length; i++) {
-      if (state.taskEntries.projects[i].id == state.id) {
-        state.taskEntries.projects[i].projectName = state.payload.name;
-      }
-    }
-  },
   //KEEP --- WORKING
   LOAD_TASK_ENTRIES_FROM_FILE(state) {
     let filepath = 'task_entries.json';
@@ -151,7 +143,6 @@ const mutations = {
     }
     else
     {
-      console.log('reached else');
       let task_entries_template = '{"projects":[]}';
       fs.writeFile(filepath, JSON.parse(task_entries_template), "utf8", err => {
         if (err) throw err;

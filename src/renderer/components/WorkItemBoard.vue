@@ -58,10 +58,10 @@
       </h4>
     </div>
 
-    <div id="addNewList"  @click="loadModal(selectedProjectID, blankObject, editStatusListModal)">
+    <div id="addNewList">
       <h3>New Status</h3>
       <h4 class="board-group">
-        <b-icon-plus-square></b-icon-plus-square>
+        <b-icon-plus-square @click="loadModal(selectedProjectID, blankObject, editStatusListModal)"></b-icon-plus-square>
       </h4>
     </div>
   </div>
