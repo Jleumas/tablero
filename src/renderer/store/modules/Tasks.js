@@ -32,12 +32,7 @@ const state = {
   }
 }
 
-const getters = {
-
-}
-
 const mutations = {
-  //KEEP --- WORKING
   CLEAR_BLANK_OBJECT(state){
     state.blankObject.name = '';
     state.blankObject.id = '';
@@ -47,7 +42,6 @@ const mutations = {
     state.blankObject.color = '';
     state.blankObject.parentItemID = '';
   },
-  //KEEP --- WORKING
   DELETE_ITEM(state, payload) {
     if (payload.type == 'project') {
       for (var i = 0; i < state.taskEntries.projects.length; i++) {
@@ -77,7 +71,6 @@ const mutations = {
       }
     }
   },
-  //KEEP --- WORKING
   CREATE_ITEM(state, payload) {
     if (payload.type == 'project') {
       state.taskEntries.projects.push({
@@ -128,11 +121,9 @@ const mutations = {
       console.log(`Type ${payload.type} does not exist!!`);
     }
   },
-  //KEEP --- WORKING
   SELECTED_ITEM_BINDING(state, payload) {
     state.selectedItem[payload.key] = payload.value;
   },
-  //KEEP --- WORKING
   LOAD_TASK_ENTRIES_FROM_FILE(state) {
     let filepath = 'task_entries.json';
     if (fs.existsSync(filepath)){
@@ -151,7 +142,6 @@ const mutations = {
       })
     }
   },
-  //KEEP --- WORKING
   COMMIT_TASK_ENTRIES_TO_FILE(state) {
     let savingDisaabled = false;
     if (savingDisaabled) {
@@ -165,11 +155,9 @@ const mutations = {
       });
     }
   },
-  //KEEP --- WORKING
   SET_SELECTED_ITEM_DETAILS(state, payload) {
     state.selectedItem = payload;
   },
-  //KEEP --- WORKING
   SET_SELECTED_PROJECT(state, payload) {
     state.selectedProjectName = payload;
 
@@ -185,19 +173,15 @@ const mutations = {
 }
 
 const actions = {
-  //KEEP --- WORKING
   deleteItem({ commit }, payload) {
     commit('DELETE_ITEM', payload);
     commit('CLEAR_BLANK_OBJECT');
     commit('COMMIT_TASK_ENTRIES_TO_FILE');
-
   },
-  //KEEP --- WORKING
   selectedItemBinding({ commit }, payload) {
     commit('SELECTED_ITEM_BINDING', payload);
     commit('COMMIT_TASK_ENTRIES_TO_FILE');
   },
-  //KEEP --- TEST
   createItem({ commit }, payload) {
     if (payload.id == '') {
       commit('CREATE_ITEM', payload);
@@ -205,19 +189,15 @@ const actions = {
     }
     commit('COMMIT_TASK_ENTRIES_TO_FILE');
   },
-  //KEEP --- WORKING
   setSelectedItemDetails({ commit }, payload) {
     commit('SET_SELECTED_ITEM_DETAILS', payload)
   },
-  //KEEP --- WORKING
   loadTaskEntriesFromFile({ commit }) {
     commit('LOAD_TASK_ENTRIES_FROM_FILE');
   },
-  //KEEP --- WORKING
   commitTaskEntriesToFile({ commit }) {
     commit('COMMIT_TASK_ENTRIES_TO_FILE');
   },
-  //KEEP --- WORKING
   setSelectedProject({ commit }, payload) {
     commit('SET_SELECTED_PROJECT', payload);
   }
@@ -227,6 +207,5 @@ export default {
   namespaced: true,
   state,
   mutations,
-  actions,
-  getters
+  actions
 }

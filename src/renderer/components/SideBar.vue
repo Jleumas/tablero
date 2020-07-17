@@ -31,8 +31,7 @@ export default {
   methods: {
     ...mapActions([
       "setSelectedProject",
-      "setSelectedItemDetails",
-      "commitTaskEntriesToFile"
+      "setSelectedItemDetails"
     ]),
     loadModal(item, modalID) {
       if (item == this.blankObject) {
